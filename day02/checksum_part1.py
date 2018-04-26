@@ -1,34 +1,35 @@
-def checksum_divisible(spreadsheet):
+'''http://adventofcode.com/2017/day/2'''
+
+
+def checksum(spreadsheet):
+    '''
+    Returns spreadsheet's checksum.
+    Checksum is the sum of differences between the largest value and the smallest value in each row of spreadsheet.
+    '''
     rows = spreadsheet.split('\n')
     rows = [[int(cell) for cell in row.split()] for row in rows]
 
-    total = 0
-    for row in rows:
-        for i, val in enumerate(row):
-            for check_val in row[i+1:]:
-                if val % check_val == 0:
-                    total += val // check_val
-                elif check_val % val == 0:
-                    total += check_val // val
+    checksum = sum(max(row) - min(row) for row in rows)
 
-    return total
+    return checksum
 
 
 def test(func):
-    print('Test checksum_divisible function.')
+    '''Test function'''
+    print('Test checksum function.')
 
     print('#1: ', end='')
-    input_str = '''5 9 2 8
-                   9 4 7 3
-                   3 8 6 5'''
-    answer = 9
+    input_str = '''5 1 9 5
+                   7 5 3
+                   2 4 6 8'''
+    answer = 18
     print('ok' if answer == func(input_str) else 'fail')
 
 
 if __name__ == '__main__':
-    # test(checksum_divisible)
+    # test(checksum)
 
-    input_str = '''409  194 207 470 178 454 235 333 511 103 474 293 525 372 408 428
+    spreadsheet = '''409    194 207 470 178 454 235 333 511 103 474 293 525 372 408 428
 4321    2786    6683    3921    265 262 6206    2207    5712    214 6750    2742    777 5297    3764    167
 3536    2675    1298    1069    175 145 706 2614    4067    4377    146 134 1930    3850    213 4151
 2169    1050    3705    2424    614 3253    222 3287    3340    2637    61  216 2894    247 3905    214
@@ -44,4 +45,4 @@ if __name__ == '__main__':
 140 1005    2063    3048    3742    3361    117 93  2695    1529    120 3480    3061    150 3383    190
 489 732 57  75  61  797 266 593 324 475 733 737 113 68  267 141
 3858    202 1141    3458    2507    239 199 4400    3713    3980    4170    227 3968    1688    4352    4168'''
-    print(checksum_divisible(input_str))
+    print(checksum(spreadsheet))
