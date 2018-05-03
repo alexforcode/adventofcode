@@ -26,15 +26,10 @@ def find_tower(input_str: str) -> Tower:
     return Tower(name, weight, branches)
 
 
-def find_root(content: str) -> str:
+def find_root(towers: list) -> str:
     '''
     Return name of the bottom program in program tree from progs_str.
     '''
-    towers = []
-    parts = content.strip().split('\n')
-    for part in parts:
-        towers.append(find_tower(part.strip()))
-
     has_branches = set()
     are_branches = set()
     for tower in towers:
@@ -64,4 +59,10 @@ if __name__ == '__main__':
 
     with open('sources/programs_tree.txt', 'r') as file:
         content = file.read()
-    print(find_root(content))
+
+    towers = []
+    parts = content.strip().split('\n')
+    for part in parts:
+        towers.append(find_tower(part.strip()))
+
+    print(find_root(towers))
