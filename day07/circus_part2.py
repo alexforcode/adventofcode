@@ -43,26 +43,34 @@ def find_root(towers: list) -> str:
             return tower.name
 
 
-def test(func):
-    '''Test function'''
-    print('Test: find_root function.')
+def find_unbalanced(towers: list):
+    '''
 
-    print('#1: ', end='')
-    with open('sources/test.txt', 'r') as file:
-        content = file.read()
-    answer = 'tknk'
-    print('ok' if answer == func(content) else 'fail', end='\n\n')
+    '''
+    lookups = {tower.name: tower for tower in towers}
+
+    def check(tower: Tower):
+        '''
+
+        '''
+        subchecks = {name: check(lookups[name]) for name in tower.branches}
+        subcheck_weights = {weight for weight, _ in subchecks.values()}
+        is_balanced = len(subcheck_weights) <= 1
+        weight = tower.weight + sum(weight for weight, _ in subchecks.values())
+
+        if (len(subcheck_weights) > 1 and all(is_balanced for _, is_balanced in subchecks.values())):
+            print('tower:', tower.name)
+            for name, (total_weight, is_balanced) in subchecks.items():
+                above_tower = lookups[name]
+                print(name, total_weight, above_tower.weight)
+
+        return weight, is_balanced
+
+    root = lookups[find_root(towers)]
+    check(root)
 
 
 if __name__ == '__main__':
-    # test(find_root)
-
     with open('sources/programs_tree.txt', 'r') as file:
-        content = file.read()
-
-    towers = []
-    parts = content.strip().split('\n')
-    for part in parts:
-        towers.append(find_tower(part.strip()))
-
-    print(find_root(towers))
+        towers = [find_tower(line.strip()) for line in file]
+    find_unbalanced(towers)
